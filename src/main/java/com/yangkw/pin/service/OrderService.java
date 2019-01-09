@@ -156,6 +156,7 @@ public class OrderService {
             Preconditions.checkState(row == 1, "delCurrentNum fail orderId:" + orderId);
             OrderDO orderDO = orderRepository.find(orderId);
             if (orderDO.getCurrentNum() < 1) {
+
                 orderRepository.logicDelete(orderId);
             } else {
                 Boolean isLeader = userOrderRelRepository.isLeader(orderId, userId) != null;
@@ -223,6 +224,10 @@ public class OrderService {
         if (orderDO.getLeader().equals(userId)) {
             return;
         }
+        List<Integer> userIds = userOrderRelRepository.queryPartner(orderId);
+        if (userIds.isEmpty()) {
+            return;
+        }
         GeoAddress startAddress = addressService.queryGeoAddress(orderDO.getStartAddressId());
         GeoAddress endAddress = addressService.queryGeoAddress(orderDO.getEndAddressId());
         String title = startAddress.getName() + "=>" + endAddress.getName() + "的拼车队伍";
@@ -230,13 +235,8 @@ public class OrderService {
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
         String warn = "请尽快与拼车友联系哦";
         String[] params = new String[]{title, name, time, warn};
-        List<Integer> userIds = userOrderRelRepository.queryPartner(orderId);
-        if (userIds.isEmpty()) {
-            return;
-        }
-        userIds.parallelStream().filter(x -> !x.equals(userId)).map(x -> {
+        userIds.stream().filter(x -> !x.equals(userId)).forEach(x -> {
                     templateNotify(userRepository.findOpenId(x), templateCache.getTemplateId(x), params);
-                    return true;
                 }
         );
     }

@@ -23,10 +23,10 @@
     #{orderDO.targetNum},#{orderDO.currentNum},#{orderDO.deleted})
     </insert>
     <update id="addCurrentNum">
-        UPDATE pin_order SET current_num = current_num +1 WHERE id = #{id} AND deleted = 0
+        UPDATE pin_order SET current_num = current_num +1 WHERE id = #{id}
     </update>
     <update id="delCurrentNum">
-        UPDATE pin_order SET current_num = current_num -1 WHERE id = #{id} AND deleted = 0
+        UPDATE pin_order SET current_num = current_num -1 WHERE id = #{id}
     </update>
     <update id="logicDelete">
     UPDATE pin_order SET deleted = 1 WHERE id = #{id}
