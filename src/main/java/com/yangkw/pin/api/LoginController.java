@@ -2,8 +2,8 @@ package com.yangkw.pin.api;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
+import com.yangkw.pin.domain.BaseResponse;
 import com.yangkw.pin.domain.request.LoginRequest;
-import com.yangkw.pin.domain.response.LoginResponse;
 import com.yangkw.pin.domain.user.UserDO;
 import com.yangkw.pin.service.CacheService;
 import com.yangkw.pin.service.UserService;
@@ -39,8 +39,8 @@ public class LoginController {
 
     @PostMapping("login")
     @ParamCheck
-    public LoginResponse login(@RequestBody @Validated LoginRequest info, BindingResult bindingResult) {
-        LoginResponse response = new LoginResponse();
+    public BaseResponse login(@RequestBody @Validated LoginRequest info, BindingResult bindingResult) {
+        BaseResponse response = new BaseResponse();
         WxMaJscode2SessionResult result = null;
         try {
             result = wxService.getUserService().getSessionInfo(info.getCode());
@@ -49,7 +49,7 @@ public class LoginController {
         }
         if (result == null) {
             LOG.warn("session result is null code:{}", info.getCode());
-            return ResponseUtil.errorResponse(response, "session result is null");
+            return ResponseUtil.errorResponse("session result is null");
         }
         UserDO old = userService.find(result.getOpenid());
         Integer id;
@@ -61,7 +61,7 @@ public class LoginController {
         }
         String token = cacheService.addUserId(id, result.getSessionKey(), result.getOpenid());
         response.setSuccess(true);
-        response.setToken(token);
+        response.setData(token);
         return response;
     }
 }

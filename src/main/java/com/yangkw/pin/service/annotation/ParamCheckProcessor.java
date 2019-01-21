@@ -1,7 +1,6 @@
 package com.yangkw.pin.service.annotation;
 
 import com.yangkw.pin.domain.request.BaseRequest;
-import com.yangkw.pin.domain.response.BaseResponse;
 import com.yangkw.pin.service.CacheService;
 import com.yangkw.pin.service.util.ResponseUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -49,11 +48,11 @@ public class ParamCheckProcessor {
                 if (userId != null) {
                     return joinPoint.proceed();
                 } else {
-                    return ResponseUtil.errorResponse((BaseResponse) returnType.newInstance(), "LOGIN");
+                    return ResponseUtil.errorResponse("LOGIN");
                 }
             }
             if (o instanceof BindingResult && ((BindingResult) o).hasErrors()) {
-                return ResponseUtil.errorResponse((BaseResponse) returnType.newInstance(), error((BindingResult) o));
+                return ResponseUtil.errorResponse(error((BindingResult) o));
             }
         }
         return joinPoint.proceed();

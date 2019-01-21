@@ -1,4 +1,4 @@
-package com.yangkw.pin.domain.response;
+package com.yangkw.pin.domain;
 
 import java.io.Serializable;
 
@@ -11,6 +11,15 @@ public class BaseResponse implements Serializable {
     private static final long serialVersionUID = 6037946147158442253L;
     private String message;
     private Boolean success;
+    private Object data;
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
 
     public String getMessage() {
         return message;

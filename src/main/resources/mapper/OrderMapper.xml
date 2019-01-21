@@ -32,7 +32,7 @@
     UPDATE pin_order SET deleted = 1 WHERE id = #{id}
     </update>
     <update id="updateLeader">
-        UPDATE pin_order set leader = #{id} WHERE order_id=#{orderId} AND deleted = 0
+        UPDATE pin_order set leader = #{id} WHERE id=#{orderId} AND deleted = 0
     </update>
     <select id="findAll" resultMap="order">
         SELECT * FROM pin_order WHERE id in

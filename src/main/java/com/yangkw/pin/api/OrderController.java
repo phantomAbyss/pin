@@ -1,15 +1,12 @@
 package com.yangkw.pin.api;
 
+import com.yangkw.pin.domain.BaseResponse;
 import com.yangkw.pin.domain.order.Order;
 import com.yangkw.pin.domain.request.FuzzyOrderRequest;
 import com.yangkw.pin.domain.request.OrderRequest;
 import com.yangkw.pin.domain.request.OwnOrderRequest;
 import com.yangkw.pin.domain.request.PartnerOrderRequest;
 import com.yangkw.pin.domain.request.PublishOrderRequest;
-import com.yangkw.pin.domain.response.BaseResponse;
-import com.yangkw.pin.domain.response.FuzzyOrderResponse;
-import com.yangkw.pin.domain.response.OrderResponse;
-import com.yangkw.pin.domain.response.OwnOrderResponse;
 import com.yangkw.pin.service.CacheService;
 import com.yangkw.pin.service.OrderService;
 import com.yangkw.pin.service.annotation.ParamCheck;
@@ -39,20 +36,20 @@ public class OrderController {
 
     @PostMapping("fuzzy")
     @ParamCheck
-    public FuzzyOrderResponse fuzzy(@RequestBody @Validated FuzzyOrderRequest request, BindingResult bindingResult) {
-        FuzzyOrderResponse response = new FuzzyOrderResponse();
+    public BaseResponse fuzzy(@RequestBody @Validated FuzzyOrderRequest request, BindingResult bindingResult) {
+        BaseResponse response = new BaseResponse();
         List<Order> orderList = orderService.findOrderList(request);
         response.setSuccess(true);
-        response.setOrderList(orderList);
+        response.setData(orderList);
         return response;
     }
 
     @PostMapping("own")
     @ParamCheck
-    public OwnOrderResponse own(@RequestBody @Validated OwnOrderRequest request, BindingResult bindingResult) {
-        OwnOrderResponse response = new OwnOrderResponse();
+    public BaseResponse own(@RequestBody @Validated OwnOrderRequest request, BindingResult bindingResult) {
+        BaseResponse response = new BaseResponse();
         List<Order> orderList = orderService.findOwnOrderList(request.getToken());
-        response.setOrderList(orderList);
+        response.setData(orderList);
         response.setSuccess(true);
         return response;
     }
@@ -67,10 +64,10 @@ public class OrderController {
 
     @PostMapping("query")
     @ParamCheck
-    public OrderResponse query(@RequestBody @Validated OrderRequest request, BindingResult bindingResult) {
-        OrderResponse response = new OrderResponse();
+    public BaseResponse query(@RequestBody @Validated OrderRequest request, BindingResult bindingResult) {
+        BaseResponse response = new BaseResponse();
         Integer userId = cacheService.getUserId(request.getToken());
-        response.setOrder(orderService.findOrder(request.getOrderId(), userId));
+        response.setData(orderService.findOrder(request.getOrderId(), userId));
         response.setSuccess(true);
         return response;
     }

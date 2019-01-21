@@ -1,8 +1,9 @@
 package com.yangkw.pin.infrastructure.cache;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,13 +14,16 @@ import org.springframework.stereotype.Component;
 @Component
 @CacheConfig(cacheNames = "templateMap")
 public class TemplateCache {
-    @CachePut(key = "#p0")
-    public String setId(Integer userId, String templateId) {
-        return templateId;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+
+    public void setId(Integer userId, String templateId) {
+        ListOperations<String, String> operations = redisTemplate.opsForList();
+        operations.rightPush(String.valueOf(userId), templateId);
     }
 
-    @Cacheable(key = "#p0")
     public String getTemplateId(Integer userId) {
-        return null;
+        ListOperations<String, String> operations = redisTemplate.opsForList();
+        return operations.leftPop(String.valueOf(userId));
     }
 }
