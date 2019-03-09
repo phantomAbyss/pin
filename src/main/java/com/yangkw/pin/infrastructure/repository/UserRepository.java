@@ -26,7 +26,7 @@ public interface UserRepository {
      * @param openId
      * @return
      */
-    UserDO find(@Param("openId") String openId);
+    Integer findId(@Param("openId") String openId);
 
     /**
      * 查找用户openId

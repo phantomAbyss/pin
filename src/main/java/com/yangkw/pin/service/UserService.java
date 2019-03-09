@@ -25,8 +25,8 @@ public class UserService {
         return userDO.getId();
     }
 
-    public UserDO find(String openId) {
-        return userRepository.find(openId);
+    public Integer find(String openId) {
+        return userRepository.findId(openId);
     }
 
     public UserInfoForChat findChatInfo(Integer userId) {

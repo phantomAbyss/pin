@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -52,8 +51,6 @@ public class OrderService {
     private UserOrderRelRepository userOrderRelRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private TransactionTemplate transactionTemplate;
     @Autowired
     private WxMaService wxMaService;
     @Value("${templateId}")
@@ -84,12 +81,8 @@ public class OrderService {
         List<OrderDO> orderDOList = orderRepository.findAll(orderIdList);
         for (OrderDO o : orderDOList) {
             if (o.getTargetTime().isBefore(LocalDateTime.now())) {
-                transactionTemplate.execute(status -> {
-                            userOrderRelRepository.logicDelete(o.getId(), userId);
-                            orderRepository.logicDelete(o.getId());
-                            return true;
-                        }
-                );
+                userOrderRelRepository.logicDelete(o.getId(), userId);
+                orderRepository.logicDelete(o.getId());
             }
         }
         return orderDOList.stream().map(o -> assembleLeader(o, userId)).collect(Collectors.toList());
@@ -118,13 +111,8 @@ public class OrderService {
         if (orderDO.getTargetTime().isBefore(LocalDateTime.now())) {
             return false;
         }
-        transactionTemplate.execute(status -> {
-            Integer row = orderRepository.insert(orderDO);
-            Preconditions.checkState(row == 1, "order insert fail orderDO:" + orderDO);
-            Integer relRow = userOrderRelRepository.insert(construct(orderDO.getId(), userId, true));
-            Preconditions.checkState(relRow == 1, "Relation insert fail orderDO" + orderDO);
-            return true;
-        });
+        orderRepository.insert(orderDO);
+        userOrderRelRepository.insert(construct(orderDO.getId(), userId, true));
         cacheService.publishCache(request, orderDO.getId());
         return true;
     }
@@ -136,14 +124,9 @@ public class OrderService {
         if (exitRow != null) {
             return false;
         }
-        transactionTemplate.execute(status -> {
-            Integer row = orderRepository.addCurrentNum(orderId);
-            Preconditions.checkState(row == 1, "addCurrentNum fail orderId:" + orderId);
-            Integer relRow = userOrderRelRepository.insert(construct(orderId, userId, false));
-            Preconditions.checkState(relRow == 1, "relation insert fail orderId:" + orderId);
-            return true;
-        });
-        notifyService(orderId, userId, request.getFormId());
+        orderRepository.addCurrentNum(orderId);
+        userOrderRelRepository.insert(construct(orderId, userId, false));
+        notifyService(orderId, userId);
         return true;
     }
 
@@ -151,26 +134,22 @@ public class OrderService {
     public void cancel(PartnerOrderRequest request) {
         Integer orderId = request.getOrderId();
         Integer userId = cacheService.getUserId(request.getToken());
-        transactionTemplate.execute(status -> {
-            Integer row = orderRepository.delCurrentNum(orderId);
-            Preconditions.checkState(row == 1, "delCurrentNum fail orderId:" + orderId);
-            OrderDO orderDO = orderRepository.find(orderId);
-            if (orderDO.getCurrentNum() < 1) {
-
-                orderRepository.logicDelete(orderId);
-            } else {
-                Boolean isLeader = userOrderRelRepository.isLeader(orderId, userId) != null;
-                if (isLeader) {
-                    List<Integer> ids = userOrderRelRepository.queryPartner(orderId);
-                    Integer id = ids.stream().filter(x -> !x.equals(userId)).findFirst().get();
-                    userOrderRelRepository.updateLeader(orderId, id);
-                    orderRepository.updateLeader(orderId, id);
-                }
+        Integer row = orderRepository.delCurrentNum(orderId);
+        Preconditions.checkState(row == 1, "delCurrentNum fail orderId:" + orderId);
+        OrderDO orderDO = orderRepository.find(orderId);
+        if (orderDO.getCurrentNum() < 1) {
+            orderRepository.logicDelete(orderId);
+        } else {
+            Boolean isLeader = userOrderRelRepository.isLeader(orderId, userId) != null;
+            if (isLeader) {
+                List<Integer> ids = userOrderRelRepository.queryPartner(orderId);
+                Integer id = ids.stream().filter(x -> !x.equals(userId)).findFirst().get();
+                userOrderRelRepository.updateLeader(orderId, id);
+                orderRepository.updateLeader(orderId, id);
             }
-            Integer relRow = userOrderRelRepository.logicDelete(orderId, userId);
-            Preconditions.checkState(relRow == 1, "relation delete fail orderId:" + orderId);
-            return true;
-        });
+        }
+        Integer relRow = userOrderRelRepository.logicDelete(orderId, userId);
+        Preconditions.checkState(relRow == 1, "relation delete fail orderId:" + orderId);
     }
 
     private UserOrderRelDO construct(Integer orderId, Integer userId, Boolean leader) {
@@ -219,7 +198,7 @@ public class OrderService {
     }
 
     @Async
-    public void notifyService(Integer orderId, Integer userId, String formId) {
+    public void notifyService(Integer orderId, Integer userId) {
         OrderDO orderDO = orderRepository.find(orderId);
         if (orderDO.getLeader().equals(userId)) {
             return;

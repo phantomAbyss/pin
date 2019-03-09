@@ -10,16 +10,6 @@ import javax.validation.constraints.NotNull;
 public class PartnerOrderRequest extends BaseRequest {
     @NotNull(message = "orderId can't null")
     private Integer orderId;
-    @NotNull(message = "formId can't null")
-    private String formId;
-
-    public String getFormId() {
-        return formId;
-    }
-
-    public void setFormId(String formId) {
-        this.formId = formId;
-    }
 
     public Integer getOrderId() {
         return orderId;

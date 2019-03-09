@@ -10,9 +10,7 @@ import javax.validation.constraints.NotNull;
  * @author kaiwen.ykw 2018-12-21
  */
 public class LoginRequest {
-    @NotNull(message = "code can't null")
     private String code;
-    @NotNull(message = "userInfo can't null")
     private UserInfo userInfo;
 
     public String getCode() {

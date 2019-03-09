@@ -38,9 +38,10 @@
     WHERE openid = #{userDO.openid}
     </update>
 
-    <select id="find" resultMap="user">
-        select * from user where openid = #{openId}
+    <select id="findId" resultType="java.lang.Integer">
+        select id from user where openid = #{openId}
     </select>
+
     <select id="findChatInfo" resultType="com.yangkw.pin.domain.chat.UserInfoForChat">
     SELECT nick_name as nickName, avatar_url as avatarUrl , gender FROM user WHERE id = #{userId}
     </select>
