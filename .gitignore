@@ -22,8 +22,8 @@ target/
 /prodDb.*
 
 # general HSQL database files
-*Db.properties
-*Db.script
+*.properties
+*.script
 
 # logs
 /stacktrace.log
@@ -140,5 +140,4 @@ Icon
 mvnw
 mvnw.cmd
 
-application.properties
 rebel.xml
