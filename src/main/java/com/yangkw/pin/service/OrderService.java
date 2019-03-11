@@ -209,10 +209,10 @@ public class OrderService {
         }
         GeoAddress startAddress = addressService.queryGeoAddress(orderDO.getStartAddressId());
         GeoAddress endAddress = addressService.queryGeoAddress(orderDO.getEndAddressId());
-        String title = startAddress.getName() + "=>" + endAddress.getName() + "的拼车队伍";
+        String title = startAddress.getName() + " ==> " + endAddress.getName() + "的拼车队伍";
         String name = userRepository.findChatInfo(userId).getNickName();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
-        String warn = "请尽快与拼车友联系哦";
+        String warn = "请尽快与拼车友联系哦 ^_^!";
         String[] params = new String[]{title, name, time, warn};
         userIds.stream().filter(x -> !x.equals(userId)).forEach(x -> {
                     templateNotify(userRepository.findOpenId(x), templateCache.getTemplateId(x), params);

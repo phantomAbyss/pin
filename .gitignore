@@ -140,4 +140,5 @@ Icon
 mvnw
 mvnw.cmd
 
+application.properties
 rebel.xml
