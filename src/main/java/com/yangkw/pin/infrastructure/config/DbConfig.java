@@ -25,23 +25,4 @@ public class DbConfig {
         DruidDataSource druidDataSource = new DruidDataSource();
         return druidDataSource;
     }
-    @Bean
-    public FilterRegistrationBean getFilterRegistrationBean(){
-        FilterRegistrationBean filter = new FilterRegistrationBean();
-        filter.setFilter(new WebStatFilter());
-        filter.setName("druidWebStatFilter");
-        filter.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*");
-        filter.addUrlPatterns("/*");
-        return filter;
-    }
-
-    @Bean
-    public ServletRegistrationBean getServletRegistrationBean(){
-        ServletRegistrationBean servlet = new ServletRegistrationBean(new StatViewServlet(),"/druid/*");
-        servlet.setName("druidStatViewServlet");
-        servlet.addInitParameter("resetEnable", "false");
-        servlet.addInitParameter("loginUsername","druid");
-        servlet.addInitParameter("loginPassword","kevin");
-        return servlet;
-    }
 }
