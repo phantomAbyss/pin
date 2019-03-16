@@ -13,7 +13,6 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 @SpringBootApplication
 @EnableCaching
 @EnableAsync
-@ServletComponentScan
 @EnableWebSocket
 public class PinApplication {
 
