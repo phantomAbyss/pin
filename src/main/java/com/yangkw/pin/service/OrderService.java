@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,10 +80,15 @@ public class OrderService {
             return Collections.emptyList();
         }
         List<OrderDO> orderDOList = orderRepository.findAll(orderIdList);
-        for (OrderDO o : orderDOList) {
-            if (o.getTargetTime().isBefore(LocalDateTime.now())) {
-                userOrderRelRepository.logicDelete(o.getId(), userId);
-                orderRepository.logicDelete(o.getId());
+        LocalDateTime deadLine = LocalDateTime.now().plusHours(1);
+        Iterator<OrderDO> iterator = orderDOList.iterator();
+        while (iterator.hasNext()) {
+            OrderDO temp = iterator.next();
+            if (temp.getTargetTime().isBefore(deadLine)) {
+                Integer id = temp.getId();
+                userOrderRelRepository.logicDelete(id, userId);
+                orderRepository.logicDelete(id);
+                iterator.remove();
             }
         }
         return orderDOList.stream().map(o -> assembleLeader(o, userId)).collect(Collectors.toList());
