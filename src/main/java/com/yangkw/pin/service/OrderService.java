@@ -181,7 +181,9 @@ public class OrderService {
     }
 
     private Order assembleLeader(OrderDO orderDO, Integer userId) {
-        return assemble(orderDO).setLeader(orderDO.getLeader().equals(userId));
+        Order order = assemble(orderDO);
+        order.setLeader(orderDO.getLeader().equals(userId));
+        return order;
     }
 
     private Order assemble(OrderDO orderDO) {
