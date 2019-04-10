@@ -1,5 +1,6 @@
 package com.yangkw.pin.service;
 
+import com.yangkw.pin.domain.address.Dot;
 import com.yangkw.pin.domain.address.GeoAddress;
 import com.yangkw.pin.domain.order.TimeDTO;
 import com.yangkw.pin.domain.request.FuzzyOrderRequest;
@@ -79,4 +80,7 @@ public class CacheService {
         return LocalDateTime.of(time.getYear(), time.getMonth(), time.getDay(), time.getHour(), time.getMinute());
     }
 
+    public List<Integer> startAdvice(Dot dot) {
+        return startAbstractGeoCache.findOrderId(dot);
+    }
 }

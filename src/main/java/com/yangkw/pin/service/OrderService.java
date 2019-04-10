@@ -10,6 +10,7 @@ import com.yangkw.pin.domain.order.Order;
 import com.yangkw.pin.domain.order.OrderDO;
 import com.yangkw.pin.domain.order.TimeDTO;
 import com.yangkw.pin.domain.relation.UserOrderRelDO;
+import com.yangkw.pin.domain.request.AdviceOrderRequest;
 import com.yangkw.pin.domain.request.FuzzyOrderRequest;
 import com.yangkw.pin.domain.request.PartnerOrderRequest;
 import com.yangkw.pin.domain.request.PublishOrderRequest;
@@ -155,6 +156,13 @@ public class OrderService {
         }
         Integer relRow = userOrderRelRepository.logicDelete(orderId, userId);
         Preconditions.checkState(relRow == 1, "relation delete fail orderId:" + orderId);
+    }
+    public List<Order> adviceOrderS(AdviceOrderRequest request){
+        List<Integer> orderIds = cacheService.startAdvice(request.getDot());
+        if(orderIds.isEmpty()){
+            return Collections.emptyList();
+        }
+        return orderRepository.findAll(orderIds).stream().map(this::assemble).collect(Collectors.toList());
     }
 
     private UserOrderRelDO construct(Integer orderId, Integer userId, Boolean leader) {
