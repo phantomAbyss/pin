@@ -25,35 +25,11 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
 public class BasicTest {
-    @Autowired
-    private UserService service;
 
     @Test
     public void logTest() {
-        LoginRequest request = new LoginRequest();
-        UserInfo info = new UserInfo();
-        info.setCountry("");
-        info.setProvince("");
-        info.setCity("");
-        info.setLanguage("");
-        info.setGender((byte) 0);
-        info.setNickName("");
-        info.setAvatarUrl("");
-        request.setCode("code");
-        request.setUserInfo(info);
-        Integer row = service.insert(request, "openId");
-        Assert.notNull(row, "insert user error");
+
     }
 
-    @Test
-    public void list(){
-        String a = null;
-        List<String> list = new LinkedList<>();
-        for (int i=1110;i<1113;i++){
-            a=String.valueOf(i);
-            list.add(a);
-        }
-        System.out.println(list.size());
-    }
 
 }
