@@ -109,7 +109,6 @@ public class OrderService {
         return assembleLeader(orderDO, userId);
     }
 
-
     public Boolean publish(PublishOrderRequest request) {
         Integer userId = cacheService.getUserId(request.getToken());
         PublishResult publishResult = addressService.publish(request.getStartAddress(), request.getEndAddress());
@@ -196,6 +195,7 @@ public class OrderService {
         order.setOrderItem(orderDO.getTargetTime());
         order.setTargetNum(orderDO.getTargetNum());
         order.setCurrentNum(orderDO.getCurrentNum());
+        order.setLeaderName(userRepository.findChatInfo(orderDO.getCreator()).getNickName());
         return order;
     }
 

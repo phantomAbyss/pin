@@ -7,11 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -27,20 +29,31 @@ public class BasicTest {
     private UserService service;
 
     @Test
-    public void logTest(){
+    public void logTest() {
         LoginRequest request = new LoginRequest();
         UserInfo info = new UserInfo();
         info.setCountry("");
         info.setProvince("");
         info.setCity("");
         info.setLanguage("");
-        info.setGender((byte)0);
+        info.setGender((byte) 0);
         info.setNickName("");
         info.setAvatarUrl("");
         request.setCode("code");
         request.setUserInfo(info);
-        Integer row = service.insert(request,"openId");
-        Assert.notNull(row,"insert user error");
+        Integer row = service.insert(request, "openId");
+        Assert.notNull(row, "insert user error");
+    }
+
+    @Test
+    public void list(){
+        String a = null;
+        List<String> list = new LinkedList<>();
+        for (int i=1110;i<1113;i++){
+            a=String.valueOf(i);
+            list.add(a);
+        }
+        System.out.println(list.size());
     }
 
 }
