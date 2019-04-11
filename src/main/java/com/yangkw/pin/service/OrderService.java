@@ -14,6 +14,7 @@ import com.yangkw.pin.domain.request.AdviceOrderRequest;
 import com.yangkw.pin.domain.request.FuzzyOrderRequest;
 import com.yangkw.pin.domain.request.PartnerOrderRequest;
 import com.yangkw.pin.domain.request.PublishOrderRequest;
+import com.yangkw.pin.infrastructure.cache.RedisLock;
 import com.yangkw.pin.infrastructure.cache.TemplateCache;
 import com.yangkw.pin.infrastructure.repository.OrderRepository;
 import com.yangkw.pin.infrastructure.repository.UserOrderRelRepository;
@@ -59,6 +60,8 @@ public class OrderService {
     private String templateId;
     @Autowired
     private TemplateCache templateCache;
+    @Autowired
+    private RedisLock redisLock;
 
     public List<Order> findOrderList(FuzzyOrderRequest request) {
         List<Integer> orderids = cacheService.findNearOrderId(request);
@@ -112,6 +115,10 @@ public class OrderService {
 
     public Boolean publish(PublishOrderRequest request) {
         Integer userId = cacheService.getUserId(request.getToken());
+        boolean condition = redisLock.getLock(userId);
+        if (!condition) {
+            return false;
+        }
         PublishResult publishResult = addressService.publish(request.getStartAddress(), request.getEndAddress());
         OrderDO orderDO = assemble(request, publishResult, userId);
         if (orderDO.getTargetTime().isBefore(LocalDateTime.now())) {
@@ -157,9 +164,10 @@ public class OrderService {
         Integer relRow = userOrderRelRepository.logicDelete(orderId, userId);
         Preconditions.checkState(relRow == 1, "relation delete fail orderId:" + orderId);
     }
-    public List<Order> adviceOrderS(AdviceOrderRequest request){
+
+    public List<Order> adviceOrderS(AdviceOrderRequest request) {
         List<Integer> orderIds = cacheService.startAdvice(request.getDot());
-        if(orderIds.isEmpty()){
+        if (orderIds.isEmpty()) {
             return Collections.emptyList();
         }
         return orderRepository.findAll(orderIds).stream().map(this::assemble).collect(Collectors.toList());

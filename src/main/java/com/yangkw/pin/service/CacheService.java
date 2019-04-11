@@ -32,6 +32,8 @@ public class CacheService {
     @Qualifier("end")
     private AbstractGeoCache endAbstractGeoCache;
 
+
+
     public String addUserId(Integer id, String sessionKey, String openid) {
         String token = RandomStringUtils.randomAlphanumeric(16);
         UserToken userToken = tokenCache.generateToken(token, id, sessionKey, openid);
