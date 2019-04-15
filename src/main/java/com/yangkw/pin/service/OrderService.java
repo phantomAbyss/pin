@@ -157,6 +157,7 @@ public class OrderService {
             if (isLeader) {
                 List<Integer> ids = userOrderRelRepository.queryPartner(orderId);
                 Integer id = ids.stream().filter(x -> !x.equals(userId)).findFirst().get();
+                LOG.info("update leader orderId:{}, newId:{},oldId:{}", orderId, id, userId);
                 userOrderRelRepository.updateLeader(orderId, id);
                 orderRepository.updateLeader(orderId, id);
             }
