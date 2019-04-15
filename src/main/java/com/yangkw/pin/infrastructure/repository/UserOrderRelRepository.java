@@ -72,4 +72,6 @@ public interface UserOrderRelRepository {
      * @return
      */
     Integer updateLeader(@Param("orderId") Integer orderId, @Param("userId") Integer userId);
+
+    void cancelMember(@Param("orderId") Integer orderId, @Param("id") Integer id);
 }

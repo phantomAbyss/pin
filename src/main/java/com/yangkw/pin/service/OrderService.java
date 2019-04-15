@@ -159,6 +159,7 @@ public class OrderService {
                 Integer id = ids.stream().filter(x -> !x.equals(userId)).findFirst().get();
                 LOG.info("update leader orderId:{}, newId:{},oldId:{}", orderId, id, userId);
                 userOrderRelRepository.updateLeader(orderId, id);
+                userOrderRelRepository.cancelMember(orderId,id);
                 orderRepository.updateLeader(orderId, id);
             }
         }
@@ -214,7 +215,7 @@ public class OrderService {
         order.setOrderItem(orderDO.getTargetTime());
         order.setTargetNum(orderDO.getTargetNum());
         order.setCurrentNum(orderDO.getCurrentNum());
-        order.setLeaderName(userRepository.findChatInfo(orderDO.getCreator()).getNickName());
+        order.setLeaderName(userRepository.findChatInfo(orderDO.getLeader()).getNickName());
         return order;
     }
 
