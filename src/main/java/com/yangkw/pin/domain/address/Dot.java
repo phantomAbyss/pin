@@ -2,6 +2,7 @@ package com.yangkw.pin.domain.address;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Dot implements Serializable {
     private static final long serialVersionUID = 779891169234313335L;
     /**
