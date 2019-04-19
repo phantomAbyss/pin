@@ -3,6 +3,7 @@ package com.yangkw.pin.domain.order;
 import com.yangkw.pin.domain.address.GeoAddress;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -11,7 +12,9 @@ import java.time.LocalDateTime;
  * @author kaiwen.ykw 2018-12-26
  */
 @Data
-public class Order {
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = 3168310970232785653L;
     /**
      * 是否是队长
      */

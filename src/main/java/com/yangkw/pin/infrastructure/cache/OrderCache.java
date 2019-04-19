@@ -2,12 +2,10 @@ package com.yangkw.pin.infrastructure.cache;
 
 import com.yangkw.pin.domain.order.Order;
 import com.yangkw.pin.domain.order.OrderDO;
-import com.yangkw.pin.domain.user.UserToken;
 import com.yangkw.pin.infrastructure.repository.UserRepository;
 import com.yangkw.pin.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
