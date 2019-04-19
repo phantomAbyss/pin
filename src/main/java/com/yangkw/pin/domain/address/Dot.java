@@ -3,6 +3,8 @@ package com.yangkw.pin.domain.address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 类Point.java
  *
@@ -10,7 +12,8 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class Dot {
+public class Dot implements Serializable {
+    private static final long serialVersionUID = 779891169234313335L;
     /**
      * 纬度
      */
