@@ -1,7 +1,7 @@
 package com.yangkw.pin.infrastructure.cache;
 
-import com.yangkw.pin.domain.order.Order;
 import com.yangkw.pin.domain.order.OrderDO;
+import com.yangkw.pin.domain.order.OrderVO;
 import com.yangkw.pin.infrastructure.repository.UserRepository;
 import com.yangkw.pin.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +25,18 @@ public class OrderCache {
     private UserRepository userRepository;
 
     @Cacheable(key = "#p0.id")
-    public Order getOrder(OrderDO orderDO) {
-        Order order = new Order();
-        order.setId(orderDO.getId());
-        order.setStartAddress(addressService.queryGeoAddress(orderDO.getStartAddressId()));
-        order.setEndAddress(addressService.queryGeoAddress(orderDO.getEndAddressId()));
-        order.setPublishTime(transfer(orderDO.getGmtCreate()));
-        order.setUpdateTime(transfer(orderDO.getGmtModified()));
-        order.setTargetTime(transfer(orderDO.getTargetTime()));
-        order.setOrderItem(orderDO.getTargetTime());
-        order.setTargetNum(orderDO.getTargetNum());
-        order.setCurrentNum(orderDO.getCurrentNum());
-        order.setLeaderName(userRepository.findChatInfo(orderDO.getLeader()).getNickName());
-        return order;
+    public OrderVO getOrder(OrderDO orderDO) {
+        OrderVO orderVO = new OrderVO();
+        orderVO.setId(orderDO.getId());
+        orderVO.setStartAddress(addressService.queryGeoAddress(orderDO.getStartAddressId()));
+        orderVO.setEndAddress(addressService.queryGeoAddress(orderDO.getEndAddressId()));
+        orderVO.setPublishTime(transfer(orderDO.getGmtCreate()));
+        orderVO.setUpdateTime(transfer(orderDO.getGmtModified()));
+        orderVO.setTargetTime(transfer(orderDO.getTargetTime()));
+        orderVO.setTargetNum(orderDO.getTargetNum());
+        orderVO.setCurrentNum(orderDO.getCurrentNum());
+        orderVO.setLeaderName(userRepository.findChatInfo(orderDO.getLeader()).getNickName());
+        return orderVO;
     }
 
     private String transfer(LocalDateTime time) {

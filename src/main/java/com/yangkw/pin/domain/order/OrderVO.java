@@ -4,7 +4,6 @@ import com.yangkw.pin.domain.address.GeoAddress;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 类Order.java
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
  * @author kaiwen.ykw 2018-12-26
  */
 @Data
-public class Order implements Serializable {
+public class OrderVO implements Serializable {
 
     private static final long serialVersionUID = 3168310970232785653L;
     /**
@@ -44,7 +43,6 @@ public class Order implements Serializable {
      */
     private String targetTime;
 
-    private LocalDateTime orderItem;
     /**
      * 队伍人数
      */

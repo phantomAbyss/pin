@@ -5,7 +5,7 @@ import cn.binarywang.wx.miniapp.bean.WxMaTemplateData;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
 import com.yangkw.pin.domain.address.GeoAddress;
 import com.yangkw.pin.domain.address.PublishResult;
-import com.yangkw.pin.domain.order.Order;
+import com.yangkw.pin.domain.order.OrderVO;
 import com.yangkw.pin.domain.order.OrderDO;
 import com.yangkw.pin.domain.order.TimeDTO;
 import com.yangkw.pin.domain.relation.UserOrderRelDO;
@@ -65,7 +65,7 @@ public class OrderService {
     @Autowired
     private OrderCache orderCache;
 
-    public List<Order> findOrderList(FuzzyOrderRequest request) {
+    public List<OrderVO> findOrderList(FuzzyOrderRequest request) {
         List<Integer> orderIds = cacheService.findNearOrderId(request);
         if (orderIds.isEmpty()) {
             return Collections.emptyList();
@@ -78,7 +78,7 @@ public class OrderService {
         return orderDOList.stream().map(this::assemble).collect(Collectors.toList());
     }
 
-    public List<Order> findOwnOrderList(String token) {
+    public List<OrderVO> findOwnOrderList(String token) {
         Integer userId = cacheService.getUserId(token);
 
         List<Integer> orderIdList = userOrderRelRepository.queryOwnOrderList(userId);
@@ -100,7 +100,7 @@ public class OrderService {
         return orderDOList.stream().map(o -> assembleLeader(o, userId)).collect(Collectors.toList());
     }
 
-    public Order findOrder(Integer id, Integer userId) {
+    public OrderVO findOrder(Integer id, Integer userId) {
         OrderDO orderDO = orderRepository.find(id);
         return assembleLeader(orderDO, userId);
     }
@@ -156,7 +156,7 @@ public class OrderService {
         userOrderRelRepository.logicDelete(orderId, userId);
     }
 
-    public List<Order> adviceOrderS(AdviceOrderRequest request) {
+    public List<OrderVO> adviceOrderS(AdviceOrderRequest request) {
         List<Integer> orderIds = cacheService.startAdvice(request.getDot());
         if (orderIds.isEmpty()) {
             return Collections.emptyList();
@@ -187,13 +187,13 @@ public class OrderService {
         return orderDO;
     }
 
-    private Order assembleLeader(OrderDO orderDO, Integer userId) {
-        Order order = assemble(orderDO);
-        order.setLeader(orderDO.getLeader().equals(userId));
-        return order;
+    private OrderVO assembleLeader(OrderDO orderDO, Integer userId) {
+        OrderVO orderVO = assemble(orderDO);
+        orderVO.setLeader(orderDO.getLeader().equals(userId));
+        return orderVO;
     }
 
-    private Order assemble(OrderDO orderDO) {
+    private OrderVO assemble(OrderDO orderDO) {
         return orderCache.getOrder(orderDO);
     }
 

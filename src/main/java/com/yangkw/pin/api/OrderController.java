@@ -1,7 +1,7 @@
 package com.yangkw.pin.api;
 
 import com.yangkw.pin.domain.BaseResponse;
-import com.yangkw.pin.domain.order.Order;
+import com.yangkw.pin.domain.order.OrderVO;
 import com.yangkw.pin.domain.request.AdviceOrderRequest;
 import com.yangkw.pin.domain.request.FuzzyOrderRequest;
 import com.yangkw.pin.domain.request.OrderRequest;
@@ -39,9 +39,9 @@ public class OrderController {
     @ParamCheck
     public BaseResponse fuzzy(@RequestBody @Validated FuzzyOrderRequest request, BindingResult bindingResult) {
         BaseResponse response = new BaseResponse();
-        List<Order> orderList = orderService.findOrderList(request);
+        List<OrderVO> orderVOList = orderService.findOrderList(request);
         response.setSuccess(true);
-        response.setData(orderList);
+        response.setData(orderVOList);
         return response;
     }
 
@@ -49,8 +49,8 @@ public class OrderController {
     @ParamCheck
     public BaseResponse own(@RequestBody @Validated OwnOrderRequest request, BindingResult bindingResult) {
         BaseResponse response = new BaseResponse();
-        List<Order> orderList = orderService.findOwnOrderList(request.getToken());
-        response.setData(orderList);
+        List<OrderVO> orderVOList = orderService.findOwnOrderList(request.getToken());
+        response.setData(orderVOList);
         response.setSuccess(true);
         return response;
     }
