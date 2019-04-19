@@ -25,45 +25,25 @@ import java.util.List;
  * @author kaiwen.ykw 2018-12-27
  */
 @Component
-public abstract class AbstractGeoCache {
+public class GeoCache {
     @Autowired
     protected StringRedisTemplate redisTemplate;
-
-    /**
-     * 增加缓存
-     *
-     * @param dot        坐标
-     * @param orderId    订单号
-     * @param targetTime 目标时间
-     */
-    public abstract void add(Dot dot, Integer orderId, LocalDateTime targetTime);
-
     /**
      * 添加缓存
      *
-     * @param key        key
+     * @param isStart        起点
      * @param dot        坐标
-     * @param orderId    订单号
-     * @param targetTime 目标时间
+     * @param orderCacheDO    订单DO
      */
-    protected void add(String key, Dot dot, Integer orderId, LocalDateTime targetTime) {
+    public void add(boolean isStart, Dot dot,OrderCacheDO orderCacheDO) {
+        String key = isStart ? "start" : "end";
         GeoOperations<String, String> operations = redisTemplate.opsForGeo();
         Point point = new Point(dot.getLongitude(), dot.getLatitude());
-        OrderCacheDO orderCacheDO = new OrderCacheDO();
-        orderCacheDO.setOrderId(orderId);
-        orderCacheDO.setTargetTime(targetTime);
         operations.add(key, point, JSON.toJSONString(orderCacheDO));
     }
 
-    /**
-     * 查询相近orderId
-     *
-     * @param dot 坐标
-     * @return
-     */
-    public abstract List<Integer> findOrderId(Dot dot);
-
-    protected List<Integer> findOrderId(Dot dot, String key) {
+    public List<Integer> findOrderId(Dot dot, boolean isStart) {
+        String key = isStart ? "start" : "end";
         List<Integer> orderIdList = new LinkedList<>();
         GeoOperations<String, String> operations = redisTemplate.opsForGeo();
         Point point = new Point(dot.getLongitude(), dot.getLatitude());

@@ -3,7 +3,6 @@ package com.yangkw.pin.service;
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateData;
 import cn.binarywang.wx.miniapp.bean.WxMaTemplateMessage;
-import com.google.common.base.Preconditions;
 import com.yangkw.pin.domain.address.GeoAddress;
 import com.yangkw.pin.domain.address.PublishResult;
 import com.yangkw.pin.domain.order.Order;
@@ -14,6 +13,7 @@ import com.yangkw.pin.domain.request.AdviceOrderRequest;
 import com.yangkw.pin.domain.request.FuzzyOrderRequest;
 import com.yangkw.pin.domain.request.PartnerOrderRequest;
 import com.yangkw.pin.domain.request.PublishOrderRequest;
+import com.yangkw.pin.infrastructure.cache.OrderCache;
 import com.yangkw.pin.infrastructure.cache.RedisLock;
 import com.yangkw.pin.infrastructure.cache.TemplateCache;
 import com.yangkw.pin.infrastructure.repository.OrderRepository;
@@ -62,15 +62,17 @@ public class OrderService {
     private TemplateCache templateCache;
     @Autowired
     private RedisLock redisLock;
+    @Autowired
+    private OrderCache orderCache;
 
     public List<Order> findOrderList(FuzzyOrderRequest request) {
-        List<Integer> orderids = cacheService.findNearOrderId(request);
-        if (orderids.isEmpty()) {
+        List<Integer> orderIds = cacheService.findNearOrderId(request);
+        if (orderIds.isEmpty()) {
             return Collections.emptyList();
         }
-        List<OrderDO> orderDOList = orderRepository.findAll(orderids);
-        if (orderids.isEmpty()) {
-            LOG.error("orderDOList is null,orderIds :{}", orderids);
+        List<OrderDO> orderDOList = orderRepository.findAll(orderIds);
+        if (orderIds.isEmpty()) {
+            LOG.error("orderDOList is null,orderIds :{}", orderIds);
             return Collections.emptyList();
         }
         return orderDOList.stream().map(this::assemble).collect(Collectors.toList());
@@ -98,18 +100,8 @@ public class OrderService {
         return orderDOList.stream().map(o -> assembleLeader(o, userId)).collect(Collectors.toList());
     }
 
-    private Integer solvePage(Integer p, Integer dynamic) { //0 5 10
-        if (p <= 0) {
-            return 0;
-        } else {
-            return dynamic * p;
-        }
-
-    }
-
     public Order findOrder(Integer id, Integer userId) {
         OrderDO orderDO = orderRepository.find(id);
-        Preconditions.checkState(orderDO != null, "findOrder error id" + id);
         return assembleLeader(orderDO, userId);
     }
 
@@ -143,28 +135,25 @@ public class OrderService {
         return true;
     }
 
-    @Async
     public void cancel(PartnerOrderRequest request) {
         Integer orderId = request.getOrderId();
         Integer userId = cacheService.getUserId(request.getToken());
-        Integer row = orderRepository.delCurrentNum(orderId);
-        Preconditions.checkState(row == 1, "delCurrentNum fail orderId:" + orderId);
+        orderRepository.delCurrentNum(orderId);
         OrderDO orderDO = orderRepository.find(orderId);
         if (orderDO.getCurrentNum() < 1) {
             orderRepository.logicDelete(orderId);
         } else {
-            Boolean isLeader = userOrderRelRepository.isLeader(orderId, userId) != null;
+            boolean isLeader = userOrderRelRepository.isLeader(orderId, userId) != null;
             if (isLeader) {
                 List<Integer> ids = userOrderRelRepository.queryPartner(orderId);
                 Integer id = ids.stream().filter(x -> !x.equals(userId)).findFirst().get();
                 LOG.info("update leader orderId:{}, newId:{},oldId:{}", orderId, id, userId);
                 userOrderRelRepository.updateLeader(orderId, id);
-                userOrderRelRepository.cancelMember(orderId,id);
+                userOrderRelRepository.cancelMember(orderId, id);
                 orderRepository.updateLeader(orderId, id);
             }
         }
-        Integer relRow = userOrderRelRepository.logicDelete(orderId, userId);
-        Preconditions.checkState(relRow == 1, "relation delete fail orderId:" + orderId);
+        userOrderRelRepository.logicDelete(orderId, userId);
     }
 
     public List<Order> adviceOrderS(AdviceOrderRequest request) {
@@ -205,22 +194,7 @@ public class OrderService {
     }
 
     private Order assemble(OrderDO orderDO) {
-        Order order = new Order();
-        order.setId(orderDO.getId());
-        order.setStartAddress(addressService.queryGeoAddress(orderDO.getStartAddressId()));
-        order.setEndAddress(addressService.queryGeoAddress(orderDO.getEndAddressId()));
-        order.setPublishTime(transfer(orderDO.getGmtCreate()));
-        order.setUpdateTime(transfer(orderDO.getGmtModified()));
-        order.setTargetTime(transfer(orderDO.getTargetTime()));
-        order.setOrderItem(orderDO.getTargetTime());
-        order.setTargetNum(orderDO.getTargetNum());
-        order.setCurrentNum(orderDO.getCurrentNum());
-        order.setLeaderName(userRepository.findChatInfo(orderDO.getLeader()).getNickName());
-        return order;
-    }
-
-    private String transfer(LocalDateTime time) {
-        return time.toString().replace("T", " ");
+        return orderCache.getOrder(orderDO);
     }
 
     @Async
@@ -247,6 +221,10 @@ public class OrderService {
     }
 
     private void templateNotify(String receiver, String formId, String[] params) {
+        if (formId == null) {
+            LOG.info("formId is null receiver:{}", receiver);
+            return;
+        }
         WxMaTemplateMessage msg = new WxMaTemplateMessage();
         msg.setTemplateId(templateId);
         msg.setToUser(receiver);

@@ -19,8 +19,8 @@ public class RedisLock {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-
     private String prefix = "publish-";
+
     public boolean getLock(Integer userId){
         String key = prefix.concat(String.valueOf(userId));
         ValueOperations<String,String> operations = redisTemplate.opsForValue();

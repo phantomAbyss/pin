@@ -72,6 +72,12 @@ public interface UserOrderRelRepository {
      * @return
      */
     Integer updateLeader(@Param("orderId") Integer orderId, @Param("userId") Integer userId);
-
+    /**
+     * 队员退出
+     *
+     * @param orderId
+     * @param id
+     * @return
+     */
     void cancelMember(@Param("orderId") Integer orderId, @Param("id") Integer id);
 }

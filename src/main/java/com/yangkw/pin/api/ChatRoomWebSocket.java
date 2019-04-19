@@ -97,7 +97,7 @@ public class ChatRoomWebSocket {
         UserInfoForChat info = infoMap.get(session);
         MessageBody messageBody = new MessageBody(info, message);
         messageBody.setOwnMsg(false);
-        sessionSet.get(orderId).parallelStream().filter(s -> s != session)
+        sessionSet.get(orderId).stream().filter(s -> s != session)
                 .forEach(m -> {
                     try {
                         m.getBasicRemote()

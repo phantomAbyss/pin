@@ -1,5 +1,7 @@
 package com.yangkw.pin.domain.request;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -7,15 +9,8 @@ import javax.validation.constraints.NotNull;
  *
  * @author kaiwen.ykw 2018-12-26
  */
+@Data
 public class BaseRequest {
     @NotNull(message = "token can't null")
     private String token;
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }
