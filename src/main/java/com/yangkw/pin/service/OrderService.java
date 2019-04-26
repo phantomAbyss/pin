@@ -154,6 +154,7 @@ public class OrderService {
                 orderRepository.updateLeader(orderId, id);
             }
         }
+        orderCache.clear(orderId);
         userOrderRelRepository.logicDelete(orderId, userId);
     }
 
