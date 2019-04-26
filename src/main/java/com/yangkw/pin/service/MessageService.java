@@ -30,8 +30,7 @@ public class MessageService {
     }
 
     public void insert(MessageBody body, Integer userId, Integer orderId) {
-        int row = messageRepository.inert(assemble(body, userId, orderId));
-        Preconditions.checkState(row == 1, "insert message error");
+        messageRepository.inert(assemble(body, userId, orderId));
     }
 
     public List<MessageBody> queryAll(Integer orderId, Integer userId) {

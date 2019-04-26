@@ -117,7 +117,8 @@ public class ChatRoomWebSocket {
         Set<Session> sessions = sessionSet.get(orderId);
         if (!sessions.isEmpty()) {
             sessions.remove(session);
-        } else {
+        }
+        if (sessions.isEmpty()) {
             sessionSet.remove(orderId);
         }
     }

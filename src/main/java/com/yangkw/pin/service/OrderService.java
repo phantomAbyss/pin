@@ -131,6 +131,7 @@ public class OrderService {
         }
         orderRepository.addCurrentNum(orderId);
         userOrderRelRepository.insert(construct(orderId, userId, false));
+        orderCache.clear(orderId);
         notifyService(orderId, userId);
         return true;
     }

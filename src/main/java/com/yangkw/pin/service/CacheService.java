@@ -75,7 +75,7 @@ public class CacheService {
         return LocalDateTime.of(time.getYear(), time.getMonth(), time.getDay(), time.getHour(), time.getMinute());
     }
 
-    public List<Integer> startAdvice(Dot dot) {
+    List<Integer> startAdvice(Dot dot) {
         return geoCache.findOrderId(dot, true);
     }
 }

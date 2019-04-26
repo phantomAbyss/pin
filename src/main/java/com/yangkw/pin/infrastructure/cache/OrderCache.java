@@ -6,6 +6,7 @@ import com.yangkw.pin.infrastructure.repository.UserRepository;
 import com.yangkw.pin.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,10 @@ public class OrderCache {
         orderVO.setCurrentNum(orderDO.getCurrentNum());
         orderVO.setLeaderName(userRepository.findChatInfo(orderDO.getLeader()).getNickName());
         return orderVO;
+    }
+
+    @CacheEvict(key = "#p0")
+    public void clear(Integer orderId) {
     }
 
     private String transfer(LocalDateTime time) {
