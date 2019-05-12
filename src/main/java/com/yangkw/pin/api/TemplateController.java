@@ -22,8 +22,13 @@ public class TemplateController {
     @Autowired
     private TemplateCache templateCache;
 
+    private String blackStr = "the formId is a mock one";
+
     @PostMapping("save")
     public void save(@RequestBody SaveTemplateIdRequest request) {
+        if (request.getTemplateId().contains(blackStr)) {
+            return;
+        }
         Integer userId = cacheService.getUserId(request.getToken());
         templateCache.setId(userId, request.getTemplateId());
     }
