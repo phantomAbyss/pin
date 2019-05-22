@@ -97,11 +97,12 @@ public class ChatRoomWebSocket {
         UserInfoForChat info = infoMap.get(session);
         MessageBody messageBody = new MessageBody(info, message);
         messageBody.setOwnMsg(false);
+        String msg = JSON.toJSONString(messageBody);
         sessionSet.get(orderId).stream().filter(s -> s != session)
                 .forEach(m -> {
                     try {
                         m.getBasicRemote()
-                                .sendText(JSON.toJSONString(messageBody));
+                                .sendText(msg);
                     } catch (IOException e) {
                         LOG.error("IOException info:{} e:{}", info, e.getMessage());
                     }
