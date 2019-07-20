@@ -12,6 +12,9 @@
 SpringBoot(SpringMVC+MyBatis)+Redis(GeoHash+缓存)+MySQL+WebSocket
 
 分包结构
+clinet:微信小程序端
+server:Java服务端
+sql:数据库文件
 
 api：应用的入口，接口定义处
 
