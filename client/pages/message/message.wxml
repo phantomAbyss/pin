@@ -1,0 +1,72 @@
+<view class="card">
+<scroll-view scroll-y='true'  class="chat-content" scroll-with-animation scroll-top="{{scrollTop}}" >
+<view class='warn' wx:if="{{warn}}">暂无行程记录,快去发布吧</view>
+<view wx:for="{{orderList}}" wx:key="{{item.id}}">
+
+ <view class="orderCard">
+<i-row>
+    <i-col span="8" i-class="col-class">
+    <view class='startAddressName'>{{item.startAddress.name}}</view>
+    </i-col>
+
+    <i-col span="8" i-class="col-class">
+    <view class='icon'>
+    <view class='iconfont icon-enter'></view>
+    </view>
+    </i-col>
+
+    <i-col span="8" i-class="col-class">
+    <view class='endAddressName'>{{item.endAddress.name}}
+    </view>
+    </i-col>
+
+</i-row>
+<irow>
+   <i-col span="16" i-class="col-class">
+   
+   <view class='time'>
+    <view class='icon'>
+    <view class='iconfont icon-time'></view>
+    </view>
+  <view class='targetTime'>{{item.targetTime}}</view>
+</view>
+
+  <view class='block'>
+  <view class='people'>
+  <view class='iconfont icon-group'></view>
+  <view class='Num'>{{item.currentNum}} / {{item.targetNum}} </view>
+  </view>
+  </view>
+  
+  <view class='block'>
+  <view class='leader'>
+  <view class='iconfont icon-flag'></view>
+  <view class='lname'>{{item.leaderName}}</view>
+  </view>
+  </view>
+
+   </i-col>
+   <i-col span="8" i-class="col-class">
+   <view class='btn'>
+   <form bindsubmit="exit" data-orderid="{{item.id}}" report-submit='true' >
+
+       <button form-type="submit" class='join'  plain='true'  data-orderid="{{item.id}}" >退出队伍</button>
+       </form>
+    <button class='join' type='primary'  bindtap='join' data-orderid="{{item.id}}" >队伍交流</button>
+  </view>
+  </i-col>
+  
+</irow>
+</view>
+
+</view>
+</scroll-view>
+
+
+
+
+
+
+
+
+</view>

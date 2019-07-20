@@ -1,0 +1,62 @@
+
+<view class="chat" style="height: {{height}}px">
+<view class='title'> 
+<view class='block'>
+<view class='people'>
+  <view class='iconfont icon-group'></view>
+  <view class='Num'>{{order.currentNum}} / {{order.targetNum}} </view>
+  </view>
+  </view>
+  </view>
+  
+    <scroll-view scroll-y='true'  class="chat-content" style="height: {{chatHeight}}px" scroll-with-animation scroll-top="{{scrollTop}}">
+
+      <view >
+
+      <view wx:for="{{contentList}}" wx:key="{{index}}">
+
+        <!-- ↑ wx:for="{{wxchatLists}}" wx:key="{{index}}" -->
+        <view class="chat-content-list-time">{{item.info.nickName+"/"}}{{item.time}}</view>
+            <view wx:if="{{item.ownMsg === false}}" class="chat-content-list ">
+          <image class="chat-content-list-avatar "  src="{{item.info.avatarUrl}}"></image>
+
+          <view class="chat-content-list-content" bindlongtap="delMsg" data-index="{{index}}">
+              <view class="chat-content-list-msg-left"> 
+                  <text selectable='true'>{{item.message}}</text>
+              </view>
+          </view>
+
+        </view>
+
+
+
+
+
+        <view wx:if="{{item.ownMsg === true}}" class="chat-content-list right" >
+          <image class="chat-content-list-avatar"  src="{{item.info.avatarUrl}}"></image>
+          <view class="chat-content-list-content " data-index="{{index}}">
+
+              <view class="chat-content-list-msg" > 
+                  <text selectable='true'>{{item.message}}</text>
+              <view class='over-read-tip '></view>
+
+              </view>
+
+</view>
+              </view>
+          </view>
+     
+      </view>
+
+    </scroll-view>
+
+    <view class='inputArea'>
+    <input class='area' type='text'
+                   maxlength="500" confirm-type="send" value="{{textMessage}}" bindconfirm="chatInputSendTextMessage"  cursor-spacing='330' >
+                   </input>
+      
+
+    </view>
+    
+</view>
+

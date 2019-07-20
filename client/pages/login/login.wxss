@@ -1,0 +1,26 @@
+.form-box{
+  margin-top: 128rpx; 
+  width: 90%
+}
+.avatar {
+  width: 176rpx;
+  height: 176rpx;
+  border-radius: 50%;
+  border: solid 1rpx #ddd
+}
+.my-info-name {
+  color: #293539;
+  font-size: 76rrpx;
+  margin-top: 10rpx;
+  position: relative;
+  font: Heltica
+}
+.container{
+  width: 100%;
+  text-align: center;
+  padding-bottom: 30rpx;
+}
+.warn{
+  padding-top: 24rpx;
+  font: 16 rpx
+}

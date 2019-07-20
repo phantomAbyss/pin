@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "发布",
+  "usingComponents": {
+    "i-row": "../../dist/row/index",
+    "i-col": "../../dist/col/index"
+  },
+  "enablePullDownRefresh": true
+}

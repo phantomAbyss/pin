@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "i-row": "../../dist/row/index",
+    "i-col": "../../dist/col/index"
+  },
+   "navigationBarTitleText": "消息通知",
+   "onReachBottomDistance": 50
+}
