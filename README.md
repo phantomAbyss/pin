@@ -30,12 +30,12 @@ service：业务主要逻辑
 
 欢迎交流服务端开发相关技术，同时可长期帮忙内推阿里巴巴Java研发工程师岗，欢迎投递简历
 
-下面是个人技术公众号，主攻源码，纯原创，低产且用心
+下面是个人技术公众号，主攻源码，纯原创，低产用心
 
 ![WechatIMG2](http://ww2.sinaimg.cn/large/006tNc79ly1g55icd4zb7j308u0a9mxn.jpg)
 
-### 项目截图
+### 微信扫码体验
 
-![WX20190720-120204@2x](http://ww3.sinaimg.cn/large/006tNc79ly1g5668d03jzj30cq0m2q5r.jpg)
+![gh_9c6a0d6d2170_258](http://ww4.sinaimg.cn/large/006tNc79ly1g5dnkzqfcwj3076076dgr.jpg)
 
-![WX20190720-120347@2x](http://ww1.sinaimg.cn/large/006tNc79ly1g56697zr2rj30bz0khgne.jpg)
+
