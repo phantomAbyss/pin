@@ -34,8 +34,4 @@ service：业务主要逻辑
 
 ![WechatIMG2](http://ww2.sinaimg.cn/large/006tNc79ly1g55icd4zb7j308u0a9mxn.jpg)
 
-### 微信扫码体验
-
-![gh_9c6a0d6d2170_258](http://ww4.sinaimg.cn/large/006tNc79ly1g5dnkzqfcwj3076076dgr.jpg)
-
 
