@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yangkw.pin.infrastructure.repository.OrderRepository">
+<mapper namespace="com.pinche.infrastructure.repository.OrderRepository">
 
-    <resultMap id="orderVO" type="com.yangkw.pin.domain.order.OrderDO">
+    <resultMap id="order" type="com.pinche.domain.order.OrderDO">
         <result column="end_address_id" property="endAddressId"/>
         <result column="start_address_id" property="startAddressId"/>
         <result column="creator" property="creator"/>
@@ -16,17 +16,17 @@
         <result column="deleted" property="deleted"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.yangkw.pin.domain.order.OrderDO" useGeneratedKeys="true" keyColumn="id"
+    <insert id="insert" parameterType="com.pinche.domain.order.OrderDO" useGeneratedKeys="true" keyColumn="id"
             keyProperty="orderDO.id">
     INSERT INTO pin_order (gmt_create,gmt_modified,creator,leader,start_address_id,end_address_id,target_time,target_num,current_num,deleted)
     values (now(),now(),#{orderDO.creator},#{orderDO.leader},#{orderDO.startAddressId},#{orderDO.endAddressId},#{orderDO.targetTime},
     #{orderDO.targetNum},#{orderDO.currentNum},#{orderDO.deleted})
     </insert>
     <update id="addCurrentNum">
-        UPDATE pin_order SET current_num = current_num +1 WHERE id = #{id}
+        UPDATE pin_order SET current_num = current_num +1 WHERE id = #{id} AND deleted = 0
     </update>
     <update id="delCurrentNum">
-        UPDATE pin_order SET current_num = current_num -1 WHERE id = #{id}
+        UPDATE pin_order SET current_num = current_num -1 WHERE id = #{id} AND deleted = 0
     </update>
     <update id="logicDelete">
     UPDATE pin_order SET deleted = 1 WHERE id = #{id}
@@ -34,14 +34,14 @@
     <update id="updateLeader">
         UPDATE pin_order set leader = #{id} WHERE id=#{orderId} AND deleted = 0
     </update>
-    <select id="findAll" resultMap="orderVO">
+    <select id="findAll" resultMap="order">
         SELECT * FROM pin_order WHERE id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
             #{id}
         </foreach>
         AND deleted = 0
     </select>
-    <select id="find" resultMap="orderVO">
+    <select id="find" resultMap="order">
          SELECT * FROM pin_order WHERE id = #{id} AND deleted = 0
     </select>
 

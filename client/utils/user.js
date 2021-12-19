@@ -52,7 +52,7 @@ function loginByWeixin(userInfo) {
         if (res.success) {
           //存储用户信息
           wx.setStorageSync('userInfo', userInfo);
-          wx.setStorageSync('token', res.data);
+          wx.setStorageSync('token', res.token);
           resolve(res);
           wx.navigateBack({
             delta: 1

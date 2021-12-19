@@ -1,142 +1,122 @@
 <view class="card">
   <view class='address'>
-  <view class='start'>
-  <input class='chooseStart' disabled='true' placeholder='起点' value='{{startName}}' bindtap='chooseStart'/>
+    <view class='start'>
+      <input style="height: 60rpx;" class='chooseStart' disabled='true' placeholder='起点' value='{{startName}}' bindtap='chooseStart' />
+    </view>
+    <view class='end'>
+      <input style="height: 60rpx;" class='chooseEnd' disabled='true' placeholder='终点' value='{{endName}}' bindtap='chooseEnd' />
+    </view>
   </view>
-  <view class='end'>
-  <input class='chooseEnd' disabled='true' placeholder='终点' value='{{endName}}' bindtap='chooseEnd'/>
-  </view>
- </view>
 </view>
 
 <view wx:if="{{orderShow}}" class='card'>
   <scroll-view scroll-y style="height: 730rpx;">
-   <view wx:for="{{orderList}}" wx:key="id">
-  
-   <view class="orderCard">
-<i-row>
-    <i-col span="8" i-class="col-class">
-    <view class='startAddressName'>{{item.startAddress.name}}</view>
-    </i-col>
-
-    <i-col span="8" i-class="col-class">
-    <view class='icon'>
-    <view class='iconfont icon-enter'></view>
+    <view style="text-align: center;white-space:pre-wrap" class='warn' wx:if="{{orderList.length === 0}}">
+      <image style="align-self: center;" src="/images/tabbar/index_none.jpg"></image>
+      <txet>\n暂无相似行程</txet>
     </view>
-    </i-col>
-
-    <i-col span="8" i-class="col-class">
-    <view class='endAddressName'>{{item.endAddress.name}}
+    <view wx:for="{{orderList}}" wx:key="id">
+      <view class="orderCard">
+        <i-row>
+          <i-col span="8" i-class="col-class">
+            <view class='startAddressName'>{{item.startAddress.name}}</view>
+          </i-col>
+          <i-col span="8" i-class="col-class">
+            <view class='icon'>
+              <view class='iconfont icon-enter'></view>
+            </view>
+          </i-col>
+          <i-col span="8" i-class="col-class">
+            <view class='endAddressName'>{{item.endAddress.name}}
+            </view>
+          </i-col>
+        </i-row>
+        <irow>
+          <i-col span="16" i-class="col-class">
+            <view class='time'>
+              <view class='icon'>
+                <view class='iconfont icon-time'></view>
+              </view>
+              <view class='targetTime'>{{item.targetTime}}</view>
+            </view>
+            <view class='block'>
+              <view class='people'>
+                <view class='iconfont icon-group'></view>
+                <view class='Num'>{{item.currentNum}} / {{item.targetNum}} </view>
+              </view>
+            </view>
+            <view class='block'>
+              <view class='leader'>
+                <view class='iconfont icon-flag'></view>
+                <view class='lname'>{{item.leaderName}}</view>
+              </view>
+            </view>
+          </i-col>
+          <i-col span="8" i-class="col-class">
+            <view class='btn'>
+              <form bindsubmit="join" report-submit='true' data-id="{{item.id}}">
+                <button form-type='submit' class='join' type='primary' plain='true'>加入</button>
+              </form>
+            </view>
+          </i-col>
+        </irow>
+      </view>
     </view>
-    </i-col>
-
-</i-row>
-
-<irow>
-   <i-col span="16" i-class="col-class">
-   
-   <view class='time'>
-    <view class='icon'>
-    <view class='iconfont icon-time'></view>
-    </view>
-  <view class='targetTime'>{{item.targetTime}}</view>
-</view>
-
-  <view class='block'>
-  <view class='people'>
-  <view class='iconfont icon-group'></view>
-  <view class='Num'>{{item.currentNum}} / {{item.targetNum}} </view>
-  </view>
-  </view>
-  
-  <view class='block'>
-  <view class='leader'>
-  <view class='iconfont icon-flag'></view>
-  <view class='lname'>{{item.leaderName}}</view>
-  </view>
-  </view>
-
-
-   </i-col>
-
-   <i-col span="8" i-class="col-class">
-   <view class='btn'>
-
-<form bindsubmit="join" report-submit='true'  data-id="{{item.id}}"  >
-    <button form-type='submit' class='join' type='primary' plain='true' >加入</button>
-    </form>
-        
-  </view>
-  </i-col>
-  
-</irow>
-</view>
-  </view>
   </scroll-view>
 </view>
 <view wx:if="{{publishShow}}" class='publish'>
-      <form bindsubmit="publish" report-submit='true' >
-<button form-type='submit'  type='primary'>发布行程</button>
-      </form>
+  <form bindsubmit="publish" report-submit='true'>
+    <button form-type='submit' type='primary'>发布行程</button>
+  </form>
 </view>
 
-<modal hidden="{{publishView}}"  confirm-text="发布" bindcancel="cancel" bindconfirm="confirm" >
+<modal hidden="{{publishView}}" confirm-text="发布" bindcancel="cancel" bindconfirm="confirm">
 
-<view class="pubOrderCard">
-<i-row>
-    <i-col span="8" i-class="col-class">
-    <view class='pubStartAddressName'>{{startName}}</view>
-    </i-col>
+  <view class="pubOrderCard">
+    <i-row>
+      <i-col span="8" i-class="col-class">
+        <view class='pubStartAddressName'>{{startName}}</view>
+      </i-col>
 
-    <i-col span="8" i-class="col-class">
-    <view class='icon'>
-    <view class='iconfont icon-enter'></view>
-    </view>
-    </i-col>
+      <i-col span="8" i-class="col-class">
+        <view class='icon'>
+          <view class='iconfont icon-enter'></view>
+        </view>
+      </i-col>
 
-    <i-col span="8" i-class="col-class">
-    <view class='pubEndAddressName'>{{endName}}
-    </view>
-    </i-col>
+      <i-col span="8" i-class="col-class">
+        <view class='pubEndAddressName'>{{endName}}
+        </view>
+      </i-col>
 
-</i-row>
+    </i-row>
 
-<irow>
-   <i-col span="16" i-class="col-class">
-   
-   <view class='time'>
-    <view class='icon'>
-    <view class='iconfont icon-time'></view>
-    </view>
-  <view class='targetTime'>{{year}}年{{month}}月{{day}}日{{hour}}点{{minute}}分</view>
- 
-</view>
+    <irow>
+      <i-col span="16" i-class="col-class">
 
-  <view class='block'>
-  <view class='people'>
-  <view class='iconfont icon-group'></view>
-  <view class='Num'>拼{{partnerNum}}人的队伍</view>
+        <view class='time'>
+          <view class='icon'>
+            <view class='iconfont icon-time'></view>
+          </view>
+          <view class='targetTime'>{{year}}年{{month}}月{{day}}日{{hour}}点{{minute}}分</view>
+        </view>
+
+        <view class='block'>
+          <view class='people'>
+            <view class='iconfont icon-group'></view>
+            <view class='Num'>拼{{partnerNum}}人的队伍</view>
+          </view>
+        </view>
+
+      </i-col>
+
+      <i-col span="" i-class="col-class">
+
+      </i-col>
+
+    </irow>
   </view>
-  </view>
-
-   </i-col>
-
-   <i-col span="8" i-class="col-class">
-
-  </i-col>
-  
-</irow>
-</view>
-
-
-
-
-  <picker-view class='pv'
-    indicator-style="height: 50px;"
-    style="width: 100%; height: 400rpx;"
-    value="{{value}}"
-    bindchange="bindChange"
-  >
+  <picker-view class='pv' indicator-style="height: 50px;" style="width: 100%; height: 400rpx;" value="{{value}}" bindchange="bindChange">
     <picker-view-column>
       <view wx:for="{{months}}" wx:key="item" style="line-height: 50px">{{item}}月</view>
     </picker-view-column>
@@ -144,17 +124,15 @@
       <view wx:for="{{days}}" wx:key="item" style="line-height: 50px">{{item}}日</view>
     </picker-view-column>
     <picker-view-column>
-          <view wx:for="{{hours}}" wx:key="item" style="line-height: 50px">{{item}}点   </view>
+      <view wx:for="{{hours}}" wx:key="item" style="line-height: 50px">{{item}}点 </view>
     </picker-view-column>
     <picker-view-column>
-          <view wx:for="{{minutes}}" wx:key="item" style="line-height: 50px">{{item}}分   </view>
+      <view wx:for="{{minutes}}" wx:key="item" style="line-height: 50px">{{item}}分 </view>
     </picker-view-column>
 
     <picker-view-column>
-          <view wx:for="{{partnerNums}}" wx:key="item" style="line-height: 50px">{{item}}人   </view>
+      <view wx:for="{{partnerNums}}" wx:key="item" style="line-height: 50px">{{item}}人 </view>
     </picker-view-column>
   </picker-view>
 
 </modal>
-
-

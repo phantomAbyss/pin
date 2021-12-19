@@ -37,7 +37,6 @@ Page({
         app.globalData.hasLogin = false;
         util.showErrorToast('微信登录失败');
       });
-
     });
   }
 })

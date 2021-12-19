@@ -13,34 +13,34 @@
     }
   },
   "window": {
-    "backgroundTextStyle": "light",
+    "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "color": "#6e6d6b",
     "selectedColor": "#19be6b",
     "borderStyle": "black",
     "backgroundColor": "#fff",
-    "box-shadow": "0 0 6px 0",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "images/tabbar/icon_fabu.png",
-        "selectedIconPath": "images/tabbar/fabusekuai.png",
+        "iconPath": "images/tabbar/_index.png",
+        "selectedIconPath": "images/tabbar/index.png",
         "text": "发布"
       },
       {
         "pagePath": "pages/advice/advice",
-        "iconPath": "images/tabbar/select.png",
-        "selectedIconPath": "images/tabbar/select_fill.png",
-        "text": "推荐"
+        "iconPath": "images/tabbar/_nearby.png",
+        "selectedIconPath": "images/tabbar/nearby.png",
+        "text": "附近"
       },
       {
         "pagePath": "pages/message/message",
-        "iconPath": "images/tabbar/community.png",
-        "selectedIconPath": "images/tabbar/communityfill.png",
+        "iconPath": "images/tabbar/_news.png",
+        "selectedIconPath": "images/tabbar/news.png",
         "text": "消息"
       }
     ]
