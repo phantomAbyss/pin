@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yangkw.pin.infrastructure.repository.UserRepository">
-    <resultMap id="user" type="com.yangkw.pin.domain.user.UserDO">
+<mapper namespace="com.pinche.infrastructure.repository.UserRepository">
+    <resultMap id="user" type="com.pinche.domain.user.UserDO">
         <result column="avatar_url" property="avatarUrl"/>
         <result column="city" property="city"/>
         <result column="country" property="country"/>
@@ -21,7 +21,7 @@
         <result column="school" property="school"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.yangkw.pin.domain.user.UserDO" useGeneratedKeys="true" keyColumn="id"
+    <insert id="insert" parameterType="com.pinche.domain.user.UserDO" useGeneratedKeys="true" keyColumn="id"
             keyProperty="userDO.id">
     INSERT INTO user (openid,nick_name,gender,avatar_url,school,phone,
     last_login_time,gmt_create,gmt_modified,deleted,country,province,city,language)
@@ -30,7 +30,7 @@
     ,#{userDO.country},#{userDO.province},#{userDO.city},#{userDO.language})
     </insert>
 
-    <update id="update" parameterType="com.yangkw.pin.domain.user.UserDO">
+    <update id="update" parameterType="com.pinche.domain.user.UserDO">
     UPDATE user SET nick_name=#{userDO.nickName},gender=#{userDO.gender},
     avatar_url=#{userDO.avatarUrl},school=#{userDO.school},phone=#{userDO.phone},
     last_login_time=NOW(),gmt_modified=NOW(),deleted=#{userDO.deleted},
@@ -38,11 +38,10 @@
     WHERE openid = #{userDO.openid}
     </update>
 
-    <select id="findId" resultType="java.lang.Integer">
-        select id from user where openid = #{openId}
+    <select id="find" resultMap="user">
+        select * from user where openid = #{openId}
     </select>
-
-    <select id="findChatInfo" resultType="com.yangkw.pin.domain.chat.UserInfoForChat">
+    <select id="findChatInfo" resultType="com.pinche.domain.chat.UserInfoForChat">
     SELECT nick_name as nickName, avatar_url as avatarUrl , gender FROM user WHERE id = #{userId}
     </select>
 

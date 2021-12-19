@@ -1,7 +1,7 @@
 <view class="container">
 
        <image class="avatar" src="/images/logo.jpg" />
-       <view class="my-info-name">麦粑</view>
+       <view class="my-info-name">滴滴打人</view>
 
 <view class="form-box">
        <button type="primary" open-type="getUserInfo" class="login-btn" bindgetuserinfo="wxLogin">微信直接登录</button>

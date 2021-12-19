@@ -6,19 +6,19 @@ var user = require('../../utils/user.js');
 var app = getApp();
 var socketOpen = false;
 var frameBuffer_Data, session, SocketTask;
-var that= this;
-var url = 'wss://pin.yangkw.com/chatRoom/';
-//var url ='ws://localhost:8080/chatRoom/'
+var that = this;
+var url = 'wss://pin.maxz.link/chatRoom/';
+// var url ='ws://localhost:8080/chatRoom/'
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    height: 0,  //屏幕高度
-    chatHeight: 0,//聊天屏幕高度
-    orderId : null,
-    contentList : [],
-    order : {},
+    height: 0, //屏幕高度
+    chatHeight: 0, //聊天屏幕高度
+    orderId: null,
+    contentList: [],
+    order: {},
     textMessage: ''
   },
 
@@ -26,18 +26,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that =this
+    var that = this
     //获取屏幕的高度
     wx.getSystemInfo({
       success(res) {
         that.setData({
           height: wx.getSystemInfoSync().windowHeight,
-          chatHeight: wx.getSystemInfoSync().windowHeight - 80
+          chatHeight: wx.getSystemInfoSync().windowHeight - 90
         })
       }
     })
     that.setData({
-      orderId : options.orderId
+      orderId: options.orderId
     })
   },
 
@@ -84,20 +84,18 @@ Page({
       } else {
         var list = that.data.contentList
         var json = JSON.parse(onMessage.data)
-
         if (json.length > 1) {
           for (let i = 0; i < json.length; i++) {
             list.push(json[i])
           }
-        } else if(json instanceof Array) {
+        } else if (json instanceof Array) {
           list.push(json[0])
-        } else{
+        } else {
           list.push(json)
         }
         that.setData({
           contentList: list,
           scrollTop: 99999999
-
         })
       }
     })
@@ -109,7 +107,7 @@ Page({
       var that = this
       if (res.success) {
         that.setData({
-          order: res.data
+          order: res.order
         })
       }
     })
@@ -119,8 +117,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    SocketTask.close(function (close) {
-    })
+    SocketTask.close(function (close) {})
     var idx = app.globalData.roomList.indexOf(this.data.orderId)
     if (idx != -1) {
       app.globalData.roomList.splice(idx, 1)
@@ -131,11 +128,10 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    SocketTask.close(function (close) {
-    })
+    SocketTask.close(function (close) {})
     var idx = app.globalData.roomList.indexOf(this.data.orderId)
-    if(idx!=-1){
-    app.globalData.roomList.splice(idx, 1)
+    if (idx != -1) {
+      app.globalData.roomList.splice(idx, 1)
     }
   },
 
@@ -161,14 +157,14 @@ Page({
   },
   webSocket: function () {
     // 创建Socket
-    var app =getApp()
+    var app = getApp()
     var orderId = this.data.orderId
     var token = wx.getStorageSync('token')
     var data = {
       "token": token
     }
     SocketTask = wx.connectSocket({
-      url: url+orderId+"/"+token,
+      url: url + orderId + "/" + token,
       data: data,
       header: {
         'content-type': 'application/json'
@@ -185,30 +181,32 @@ Page({
       },
     })
   },
-  chatInputSendTextMessage:function(e){
+  chatInputSendTextMessage: function (e) {
     this.sendSocketMessage(e.detail.value);
-    var that =this ;
+    var that = this;
     var info = wx.getStorageSync('userInfo');
     var time = util.formatTime(new Date())
     var content = {
-      "info":{"nickName":info.nickName,"avatarUrl":info.avatarUrl},
-       "message":e.detail.value,
-       "ownMsg":true,
-       "time": time
+      "info": {
+        "nickName": info.nickName,
+        "avatarUrl": info.avatarUrl
+      },
+      "message": e.detail.value,
+      "ownMsg": true,
+      "time": time
     }
     var list = that.data.contentList
-      list.push(content)
+    list.push(content)
     that.setData({
       textMessage: '',
       contentList: list,
-      scrollTop : 99999999
-    })   
-  },
-  sendSocketMessage : function (msg) {
-    var that = this;
-   SocketTask.send({
-      data: msg
-    }, function (res) {
+      scrollTop: 99999999
     })
-  } 
+  },
+  sendSocketMessage: function (msg) {
+    var that = this;
+    SocketTask.send({
+      data: msg
+    }, function (res) {})
+  }
 })

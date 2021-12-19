@@ -1,66 +1,69 @@
 <view class='card'>
   <scroll-view scroll-y style="height: 1000rpx;">
-  <view class='warn' wx:if="{{msgShow}}">附近暂无行程,快去发布吧</view>
-   <view wx:for="{{orderList}}" wx:key="id">
-  
-   <view class="orderCard">
-<i-row>
-    <i-col span="8" i-class="col-class">
-    <view class='startAddressName'>{{item.startAddress.name}}</view>
-    </i-col>
-
-    <i-col span="8" i-class="col-class">
-    <view class='icon'>
-    <view class='iconfont icon-enter'></view>
+    <view style="text-align: center;white-space:pre-wrap;" class='warn' wx:if="{{msgShow}}">
+      <image style="align-self: center;" src="/images/tabbar/advice_none.jpg"></image>
+      <txet>\n附近暂无行程\n快去发布吧</txet>
     </view>
-    </i-col>
+    <view wx:for="{{orderList}}" wx:key="id">
 
-    <i-col span="8" i-class="col-class">
-    <view class='endAddressName'>{{item.endAddress.name}}
+      <view class="orderCard">
+        <i-row>
+          <i-col span="8" i-class="col-class">
+            <view class='startAddressName'>{{item.startAddress.name}}</view>
+          </i-col>
+
+          <i-col span="8" i-class="col-class">
+            <view class='icon'>
+              <view class='iconfont icon-enter'></view>
+            </view>
+          </i-col>
+
+          <i-col span="8" i-class="col-class">
+            <view class='endAddressName'>{{item.endAddress.name}}
+            </view>
+          </i-col>
+
+        </i-row>
+
+        <irow>
+          <i-col span="16" i-class="col-class">
+
+            <view class='time'>
+              <view class='icon'>
+                <view class='iconfont icon-time'></view>
+              </view>
+              <view class='targetTime'>{{item.targetTime}}</view>
+            </view>
+
+            <view class='block'>
+              <view class='people'>
+                <view class='iconfont icon-group'></view>
+                <view class='Num'>{{item.currentNum}} / {{item.targetNum}} </view>
+              </view>
+            </view>
+
+            <view class='block'>
+              <view class='leader'>
+                <view class='iconfont icon-flag'></view>
+                <view class='lname'>{{item.leaderName}}</view>
+              </view>
+            </view>
+
+
+          </i-col>
+
+          <i-col span="8" i-class="col-class">
+            <view class='btn'>
+
+              <form bindsubmit="join" report-submit='true' data-id="{{item.id}}">
+                <button form-type='submit' class='join' type='primary' plain='true'>加入</button>
+              </form>
+
+            </view>
+          </i-col>
+
+        </irow>
+      </view>
     </view>
-    </i-col>
-
-</i-row>
-
-<irow>
-   <i-col span="16" i-class="col-class">
-   
-   <view class='time'>
-    <view class='icon'>
-    <view class='iconfont icon-time'></view>
-    </view>
-  <view class='targetTime'>{{item.targetTime}}</view>
-</view>
-
-  <view class='block'>
-  <view class='people'>
-  <view class='iconfont icon-group'></view>
-  <view class='Num'>{{item.currentNum}} / {{item.targetNum}} </view>
-  </view>
-  </view>
-  
-  <view class='block'>
-  <view class='leader'>
-  <view class='iconfont icon-flag'></view>
-  <view class='lname'>{{item.leaderName}}</view>
-  </view>
-  </view>
-
-
-   </i-col>
-
-   <i-col span="8" i-class="col-class">
-   <view class='btn'>
-
-<form bindsubmit="join" report-submit='true'  data-id="{{item.id}}"  >
-    <button form-type='submit' class='join' type='primary' plain='true' >加入</button>
-    </form>
-        
-  </view>
-  </i-col>
-  
-</irow>
-</view>
-  </view>
   </scroll-view>
 </view>

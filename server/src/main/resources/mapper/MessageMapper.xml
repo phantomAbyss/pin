@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.yangkw.pin.infrastructure.repository.MessageRepository">
-    <resultMap id="message" type="com.yangkw.pin.domain.chat.MessageDO">
+<mapper namespace="com.pinche.infrastructure.repository.MessageRepository">
+    <resultMap id="message" type="com.pinche.domain.chat.MessageDO">
         <result column="id" property="id"/>
         <result column="order_id" property="orderId"/>
         <result column="user_id" property="userId"/>

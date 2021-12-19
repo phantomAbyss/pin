@@ -30,7 +30,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-      this.show();
+    this.show();
   },
 
   /**
@@ -51,6 +51,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    var that = this;
+    that.show();
+    wx.stopPullDownRefresh();
   },
 
   /**
@@ -73,7 +76,6 @@ Page({
   },
 
   show: function () {
-  
     var that = this;
     util.request(api.own, {
       "token": wx.getStorageSync('token')
@@ -81,10 +83,10 @@ Page({
       if (res.success) {
         that.setData({
           warn :false,
-          orderList: res.data
+          orderList: res.orderList
         })
       }
-      if(res.data.length === 0){
+      if(res.orderList.length === 0){
         that.setData({
           warn: true
         })

@@ -1,7 +1,7 @@
 // 以下是业务服务器API地址
 // 本机开发时使用
- //var apiRoot = 'https://pin.yangkw.com/';
- var apiRoot = 'http://localhost:8080/';
+ var apiRoot = 'https://pin.maxz.link/';
+//  var apiRoot = 'http://localhost:8080/';
 module.exports = {
   login: apiRoot + 'auth/login', //微信登录
   showFuzzyOrder: apiRoot + 'order/fuzzy', //按起点 终点显示行程 模糊匹配

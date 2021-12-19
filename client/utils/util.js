@@ -46,9 +46,10 @@ function request(url, data = {}, method = "POST") {
             wx.navigateTo({
               url: '/pages/login/login'
             });
-          }else{
-            reject(res.data.message);
           }
+          // }else{
+          //   reject(res.data.message);
+          // }
         }
       },
       fail: function (err) {

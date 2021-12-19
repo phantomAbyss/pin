@@ -24,14 +24,3 @@ infrastructure：基础设施层，与数据源的交互，以及配置文件定
 
 service：业务主要逻辑
 
-### 交流
-
-**wechat**: kw199789
-
-欢迎交流服务端开发相关技术，同时可长期帮忙内推阿里巴巴Java研发工程师岗，欢迎投递简历
-
-下面是个人技术公众号，主攻源码，纯原创，低产用心
-
-![WechatIMG2](http://ww2.sinaimg.cn/large/006tNc79ly1g55icd4zb7j308u0a9mxn.jpg)
-
-
